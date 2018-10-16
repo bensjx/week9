@@ -6,8 +6,55 @@
       am<br>
       <h1> Ben Soh</h1>
       </br>
-      <img src = "https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/uh59Wh0/happy-face-hand-drawn-color-icon-animation-with-transparent-background_br8eldslg_thumbnail-full10.png" height = "300px">
-      <i> added by G </i>
+      <img src = "https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/uh59Wh0/happy-face-hand-drawn-color-icon-animation-with-transparent-background_br8eldslg_thumbnail-full10.png" height = "100px">
     </div>
+
+	<div id="app">
+		<h3>What food does Ben like: </h3>
+		<input v-model.trim="newTodoText" @keyup.enter="addTodo" placeholder="Ben likes...">
+		<ul>
+			<li v-for="todo in todos">
+				<input :value="todo.text" @input="updateTodoText(todo, $event.target.value)">
+				<button @click="removeTodo(todo)">X</button>
+			</li>
+		</ul>
+	</div>
+	
+	<script src="https://unpkg.com/vue"></script>
+	<script src="https://gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+	<script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
+	
+	<script>
+		var db = firebase.initializeApp({
+	        databaseURL: 'https://thechopstick-cdb86.firebaseio.com/'
+	      }).database()
+	      var todosRef = db.ref('todos')
+	      new Vue({
+	        el: '#app',
+	        data: {
+	          newTodoText: ''
+	        },
+	        firebase: {
+	          todos: todosRef.limitToLast(25)
+	        },
+	        methods: {
+	          addTodo: function () {
+	            if (this.newTodoText) {
+	              todosRef.push({
+	                text: this.newTodoText
+	              })
+	              this.newTodoText = ''
+	            }
+	          },
+	          updateTodoText: function (todo, newText) {
+	            todosRef.child(todo['.key']).child('text').set(newText)
+	          },
+	          removeTodo: function (todo) {
+	            todosRef.child(todo['.key']).remove()
+	          }
+	        }
+	      })
+	</script>
   </body>
 </html>
+

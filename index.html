@@ -7,11 +7,11 @@
 <body>
 	<div id="app">
 		<!--<pre>{{charts}}</pre>-->
-
 		<h3> Dashboard by Giang
 			<a href="https://github.com/ankane/vue-chartkick">vue-chartkick</a>
 		</h3>
 		Current route <b>{{currentRoute}}</b>
+
 		<p>
 			<!-- use router-link component for navigation. -->
 			<!-- specify the link by passing the `to` prop. -->
@@ -65,6 +65,7 @@ const router = new VueRouter({
 })
 		var db = firebase.initializeApp({
         databaseURL: 'https://thechopstick-cdb86.firebaseio.com/'
+
       }).database()
       var chartsRef = db.ref('charts')
       new Vue({
